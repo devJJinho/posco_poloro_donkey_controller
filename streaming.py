@@ -52,7 +52,7 @@ class webControl(server.socket_server):
         await websocket.send(self.getImageData())
         while True:
             data=await websocket.recv()
-            print(data)
+            # print(data)
             self.updateMotor(data)
             # time.sleep(0.1)
             await websocket.send(self.getImageData())

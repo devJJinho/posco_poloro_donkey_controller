@@ -35,11 +35,12 @@ class motorControl:
         self.servo_steer.angle=ag
 
     def setSpeed(self,sd):
-        sd=sd%10
-        self.speed=self.defSpeed+sd*0.01
+        nSpeed=(self.defSpeed+sd)/1
+        self.speed=nSpeed
+        print(nSpeed)
 
     def setDefSpeed(self,speed):
-        self.speed=speed
+        self.defSpeed=speed
 
     def cali(self):
         self.servo_steer.angle=90
