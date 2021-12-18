@@ -26,7 +26,7 @@ class motorControl:
         self.servo_power=servo.Servo(self.pca.channels[0])
         self.servo_steer = servo.Servo(self.pca.channels[1])
         self.servo_steer.angle=90    
-        self.defSpeed=0.55
+        self.defSpeed=82
         self.speed=self.defSpeed
         self.t = threading.Thread(target=self.start)
         self.t.start()
@@ -35,9 +35,7 @@ class motorControl:
         self.servo_steer.angle=ag
 
     def setSpeed(self,sd):
-        nSpeed=(self.defSpeed+sd)/1
-        self.speed=nSpeed
-        print(nSpeed)
+        self.speed=self.defSpeed+sd
 
     def setDefSpeed(self,speed):
         self.defSpeed=speed
@@ -63,13 +61,13 @@ class motorControl:
         self.pca.deinit()
 
     def go(self):
-        self.speed=self.speed+0.01
+        self.speed=self.defSpeed+1
 
     def stop(self):
         self.speed=self.defSpeed
 
     def start(self):
         while True:
-            self.servo_power.fraction=self.speed
+            self.servo_power.angle=self.speed
             time.sleep(0.1)
 
