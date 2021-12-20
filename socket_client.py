@@ -17,9 +17,9 @@ class UpdateMotor:
     def updateSteer(self,data):
         print("motor updated")
         if data['dir']=='l':
-            self.mc.goLeft(20)
+            self.mc.goLeft(10)
         elif data['dir']=='r':
-            self.mc.goRight(30)
+            self.mc.goRight(15)
         elif data['dir']=='c':
             self.mc.cali()
         self.mc.setDefSpeed(data['def_speed'])
@@ -99,7 +99,7 @@ class ClientSocket:
                 length,stringData=self.cap.getImageData()
                 self.sock.send(length.encode('utf-8').ljust(64))
                 self.sock.send(stringData)
-                time.sleep(0.1)
+                time.sleep(0.15)
 
         except Exception as e:
             self.handleError(e)
@@ -111,8 +111,8 @@ class ClientSocket:
                 # print(data)
                 data = data.decode('utf-8')
                 data=json.loads(data)
-                self.motor.updateSteer(data)
                 print(data)
+                self.motor.updateSteer(data)
 
         except Exception as e:
             self.handleError(e)
