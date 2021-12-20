@@ -17,9 +17,9 @@ class UpdateMotor:
     def updateSteer(self,data):
         print("motor updated")
         if data['dir']=='l':
-            self.mc.goLeft(10)
+            self.mc.goLeft(8)
         elif data['dir']=='r':
-            self.mc.goRight(10)
+            self.mc.goRight(8)
         elif data['dir']=='c':
             self.mc.cali()
         self.mc.setDefSpeed(data['def_speed'])

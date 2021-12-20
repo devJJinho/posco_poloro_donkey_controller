@@ -1,31 +1,32 @@
 HOSTING_IP='192.168.0.236'
 HOSTING_PORT='9998'
 
-import assets.socket as server
-import assets.motor as motor
+import socket_server as server
+import motor_control.motor as motor
 import json
 import base64
 import cv2
-import time
-
 
 class webControl(server.socket_server):
     def __init__(self,IP,PORT):
         server.socket_server.__init__(self,IP,PORT)
         self.motorControl=motor.motorControl()
-        # self.cap=cv2.VideoCapture(0 ,cv2.CAP_V4L2)
+        # self.cap=cv2.VideoCapture("nvarguscamerasrc ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink", cv2.CAP_GSTREAMER)
+        self.cap=cv2.VideoCapture('/dev/video1')
+
         # self.cap=cv2.VideoCapture(0,cv2.)
-        # print("1")
+        print("1")
         # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,1280)
-        # print("2")
+        print("2")
         # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,720)
         print("3")
 
-        # self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]    
+        self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]    
         print("init_done")
 
     def updateMotor(self,data):
         data=json.loads(data)
+        print(data)
         if data['dir']=='l':
             self.motorControl.goLeft(20)
         elif data['dir']=='r':
@@ -54,10 +55,10 @@ class webControl(server.socket_server):
         await websocket.send(self.getImageData())
         while True:
             data=await websocket.recv()
-            print(data)
+            # print(data)
             self.updateMotor(data)
-            time.sleep(0.1)
-            await websocket.send(self.cap.getImageData())
+            # time.sleep(0.1)
+            await websocket.send(self.getImageData())
 
 aa=webControl(HOSTING_IP,HOSTING_PORT)
 aa.run()

@@ -29,18 +29,20 @@ class UpdateMotor:
         else:
             self.mc.setSpeed(speed)
 
-###########################################################
-
 class HandleImage:
     def __init__(self):
         print(1)
-        # self.cap=cv2.VideoCapture(1,cv2.CAP_V4L2)
-        self.cap=cv2.VideoCapture("nvarguscamerasrc ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink", cv2.CAP_GSTREAMER)
+        self.deviceIndex=1  
+        if self.deviceIndex==0: #picam
+            self.cap=cv2.VideoCapture("nvarguscamerasrc ! nvvidconv ! video/x-raw, format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink", cv2.CAP_GSTREAMER)
+            self.cap.set(3, 640)  # Set horizontal resolution
+            self.cap.set(4, 360)  # Set vertical resolution
+
+        elif self.deviceIndex==1: #webcam
+            self.cap=cv2.VideoCapture('/dev/video1')
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,640)
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,360)        
         print(2)
-        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,1280)
-        # self.cap.set(cv2.CAP_PROP_FRAME_WIDTH,720)
-        self.cap.set(3, 1280)  # Set horizontal resolution
-        self.cap.set(4, 720)  # Set vertical resolution
         self.encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]   
         print("Image init done")
  
@@ -52,7 +54,6 @@ class HandleImage:
         frame=cv2.flip(frame,0)
         frame=cv2.flip(frame,1)
         _, frame = cv2.imencode('.jpeg', frame)
-        # b64data = base64.b64encode(frame)
         data = numpy.array(frame)
         stringData = base64.b64encode(data)
         length = str(len(stringData))
@@ -75,7 +76,6 @@ class ClientSocket:
         self.sendThread=threading.Thread(target=self.sendImages)
         self.receiveThread.start()
         self.sendThread.start()
-     
         print("socket Done")
 
     def connectServer(self):
@@ -108,7 +108,6 @@ class ClientSocket:
         try:
             while True:
                 data = self.sock.recv(64)
-                # print(data)
                 data = data.decode('utf-8')
                 data=json.loads(data)
                 print(data)
@@ -127,7 +126,6 @@ def main():
     TCP_IP_mi= '192.168.0.242'
     TCP_IP_jinho='192.168.0.243'
     TCP_PORT = 9667
-    # ClientSocket(TCP_IP_jinho,TCP_PORT)
     ClientSocket(TCP_IP_jinho,TCP_PORT)
 
 main()
