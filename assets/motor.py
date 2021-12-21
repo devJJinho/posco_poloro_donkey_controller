@@ -1,21 +1,9 @@
 import time
-# from board import SCL, SDA
 import board
-# import busio
 
 import adafruit_motor.servo as servo
-# from adafruit_motor import servo
 from adafruit_pca9685 import PCA9685
 import threading, time
-
-# i2c = busio.I2C(SCL, SDA)
-# pca = PCA9685(i2c)
-# pca.frequency = 90
-# pca.channels[0].duty_cycle=0x0000
-# servo_power=servo.Servo(pca.channels[0])
-# servo_steer = servo.Servo(pca.channels[1])
-# servo_steer.angle=90     
-
 
 class motorControl:
     def __init__(self):
@@ -33,31 +21,11 @@ class motorControl:
         self.t.start()
         self.tt.start()
 
-    # def setAngle(self,ag):
-    #     self.servo_steer.angle=ag
-
     def setSpeed(self,sd):
         self.speed=self.defSpeed+sd
 
     def setDefSpeed(self,speed):
         self.defSpeed=speed
-
-    # def cali(self):
-    #     self.servo_steer.angle=90
-    #     time.sleep(0.1)
-    #     self.servo_steer.angle=None
-
-    # def goLeft(self,dir):
-    #     dir=int(dir)%21
-    #     self.servo_steer.angle=90+dir
-    #     time.sleep(0.1)
-    #     self.servo_steer.angle=None
-
-    # def goRight(self,dir):
-    #     dir=int(dir)%31
-    #     self.servo_steer.angle=90-dir
-    #     time.sleep(0.1)
-    #     self.servo_steer.angle=None
 
     def cali(self):
         self.angle=90
@@ -68,14 +36,14 @@ class motorControl:
     def goRight(self,dir):
         self.angle=90-dir
 
-    def quit(self):
-        self.pca.deinit()
+    # def quit(self):
+    #     self.pca.deinit()
 
-    def go(self):
-        self.speed=self.defSpeed+1
+    # def go(self):
+    #     self.speed=self.defSpeed+1
 
     def stop(self):
-        self.speed=self.defSpeed
+        self.speed=50
 
     def setServo(self):
         while True:
