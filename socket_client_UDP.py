@@ -16,10 +16,13 @@ class UpdateMotor:
 
     def updateSteer(self,data):
         print("motor updated")
+        angle=4*int(data['angle'])
+        print(angle)
+        # angle=angle
         if data['dir']=='l':
-            self.mc.goLeft(8)
+            self.mc.goLeft(angle)
         elif data['dir']=='r':
-            self.mc.goRight(8)
+            self.mc.goRight(angle)
         elif data['dir']=='c':
             self.mc.cali()
         self.mc.setDefSpeed(data['def_speed'])
@@ -138,7 +141,7 @@ class ClientSocket:
 
 def main():
     UDP_IP_sm = '192.168.0.3'
-    UDP_IP_mi= '192.168.0.242'
+    UDP_IP_mi= '141.223.140.52'
     UDP_IP_jinho='141.223.140.53'
     UDP_PORT = 9667
     # ClientSocket(TCP_IP_jinho,TCP_PORT)

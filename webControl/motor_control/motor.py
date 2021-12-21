@@ -21,69 +21,64 @@ class motorControl:
     def __init__(self):
         self.i2c = board.I2C()
         self.pca = PCA9685(self.i2c)
-        self.pca.frequency = 90
+        self.pca.frequency = 50
         self.pca.channels[0].duty_cycle=0x0000
         self.servo_power=servo.Servo(self.pca.channels[0])
         self.servo_steer = servo.Servo(self.pca.channels[1])
-        self.angle=90    
-        self.defSpeed=82
+        self.servo_steer.angle=90    
+        self.defSpeed=83
         self.speed=self.defSpeed
         self.t = threading.Thread(target=self.start)
-        self.tt=threading.Thread(target=self.setServo)
         self.t.start()
-        self.tt.start()
 
-    # def setAngle(self,ag):
-    #     self.servo_steer.angle=ag
+    def setAngle(self,ag):
+        self.servo_steer.angle=ag
 
     def setSpeed(self,sd):
+        # sd=sd%10
         self.speed=self.defSpeed+sd
 
     def setDefSpeed(self,speed):
         self.defSpeed=speed
 
-    # def cali(self):
-    #     self.servo_steer.angle=90
-    #     time.sleep(0.1)
-    #     self.servo_steer.angle=None
-
-    # def goLeft(self,dir):
-    #     dir=int(dir)%21
-    #     self.servo_steer.angle=90+dir
-    #     time.sleep(0.1)
-    #     self.servo_steer.angle=None
-
-    # def goRight(self,dir):
-    #     dir=int(dir)%31
-    #     self.servo_steer.angle=90-dir
-    #     time.sleep(0.1)
-    #     self.servo_steer.angle=None
-
     def cali(self):
-        self.angle=90
-    
+        self.servo_steer.angle=90
+        time.sleep(0.1)
+        self.servo_steer.angle=None
+
     def goLeft(self,dir):
-        self.angle=90+dir
+        dir=int(dir)%21
+        self.servo_steer.angle=90+dir
+        time.sleep(0.1)
+        self.servo_steer.angle=None
 
     def goRight(self,dir):
-        self.angle=90-dir
+        dir=int(dir)%31
+        self.servo_steer.angle=90-dir
+        time.sleep(0.1)
+        self.servo_steer.angle=None
 
     def quit(self):
         self.pca.deinit()
 
     def go(self):
-        self.speed=self.defSpeed+1
+        self.speed=self.speed+0.01
 
     def stop(self):
         self.speed=self.defSpeed
 
-    def setServo(self):
-        while True:
-            self.servo_steer.angle=self.angle
-            time.sleep(0.2)
-
     def start(self):
         while True:
             self.servo_power.angle=self.speed
-            time.sleep(0.2)
+            time.sleep(0.1)
 
+
+
+# fraction = 0.0
+# while fraction < 3.0:
+#     servo_steer.fraction = fraction
+#     fraction += 0.01
+#     time.sleep(1)
+#     print(fraction)
+
+# pca.deinit()
