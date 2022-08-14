@@ -3,7 +3,10 @@
 #### ✔️ Demo
 ![demo](./assets/img/demo.gif)
 
-#### ✔️ System Diagram
+#### ✔️ System Diagram (1/2)
+![diagram](./assets/img/system_diagram_2.jpeg)
+
+#### ✔️ System Diagram (2/2)
 ![diagram](./assets/img/system_diagram.png)
 
 #### ✔️ Hardware Diagram
